@@ -31,6 +31,9 @@ class LifeNotificationListenerService : NotificationListenerService() {
     override fun onCreate() {
         super.onCreate()
         startForeground(1, getNotification(this, "为了美好生活", "辅助开启中，请勿移除"));//创建一个通知，创建通知前记得获取开启通知权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            requestRebind(ComponentName(this, LifeNotificationListenerService::class.java))
+        }
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
