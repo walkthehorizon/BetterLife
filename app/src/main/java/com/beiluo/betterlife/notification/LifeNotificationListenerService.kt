@@ -1,6 +1,5 @@
 package com.beiluo.betterlife.notification
 
-import android.R
 import android.app.AlarmManager
 import android.app.Notification
 import android.app.NotificationChannel
@@ -11,8 +10,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.AlarmClock
+import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.text.format.DateFormat
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.AlarmManagerCompat
@@ -20,7 +21,6 @@ import androidx.core.app.NotificationCompat
 import com.beiluo.betterlife.App
 import com.beiluo.betterlife.MainActivity
 import java.util.Calendar
-import java.util.TimeZone
 
 
 class LifeNotificationListenerService : NotificationListenerService() {
@@ -85,12 +85,15 @@ class LifeNotificationListenerService : NotificationListenerService() {
 
     private fun createSystemClock(text: String) {
         val intent = Intent(AlarmClock.ACTION_SET_ALARM)
-        Calendar.getInstance(TimeZone.getDefault())
-        intent.putExtra(AlarmClock.EXTRA_MINUTES, Calendar.getInstance().get(Calendar.MINUTE) + 1)
-        intent.putExtra(AlarmClock.EXTRA_MINUTES, Calendar.getInstance().get(Calendar.MINUTE) + 1)
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MINUTE, 1)
+
+        intent.putExtra(AlarmClock.EXTRA_HOUR, calendar.get(Calendar.HOUR_OF_DAY))
+        intent.putExtra(AlarmClock.EXTRA_MINUTES, calendar.get(Calendar.MINUTE))
+        Log.d(TAG,"${calendar.get(Calendar.HOUR_OF_DAY)} ${calendar.get(Calendar.HOUR)} ${calendar.get(Calendar.MINUTE)}")
         intent.putExtra(AlarmClock.EXTRA_MESSAGE, text)
-        intent.putExtra(AlarmClock.EXTRA_VIBRATE, true);
-        intent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+        intent.putExtra(AlarmClock.EXTRA_VIBRATE, true)
+        intent.putExtra(AlarmClock.EXTRA_SKIP_UI, true)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

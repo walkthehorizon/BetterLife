@@ -18,6 +18,8 @@ import com.beiluo.betterlife.test.TestActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private var code = -1
+
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(LayoutInflater.from(this))
     }
@@ -31,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         App.mainActivity = this
         setContentView(binding.root)
         binding.tvOpen.setOnClickListener {
+            if(code !=-1){
+                return@setOnClickListener
+            }
             setStatus(0)
             startListen()
         }
@@ -40,10 +45,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setStatus(code: Int) {
+        this.code = code
         when (code) {
             0 -> binding.tvOpen.text = "正在链接..."
             200 -> binding.tvOpen.text = "已开启"
-            -1 -> binding.tvOpen.text = "已断开,点击重试"
+            -1 -> binding.tvOpen.text = "一键开启监控"
         }
     }
 
@@ -78,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         // 构建配置
         val mBuilder = NotificationCompat.Builder(this, TestActivity.CHANNEL_ID)
-            .setContentTitle("交管12123消息") // 标题
+            .setContentTitle("交管12123消息(测试)") // 标题
             .setContentText("您的小型汽车于xxx在xxx路未按规定停放已被记录，请立即驶离，未及时驶离的，将依法予以处罚，谢谢配合！") // 文本
             .setSmallIcon(R.mipmap.ic_launcher) // 小图标
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)) // 大图标
