@@ -17,6 +17,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.app.NotificationCompat
+import com.beiluo.betterlife.App
 import com.beiluo.betterlife.MainActivity
 import java.util.Calendar
 import java.util.TimeZone
@@ -30,7 +31,10 @@ class LifeNotificationListenerService : NotificationListenerService() {
 
     override fun onCreate() {
         super.onCreate()
-        startForeground(1, getNotification(this, "为了美好生活", "辅助开启中，请勿移除"));//创建一个通知，创建通知前记得获取开启通知权限
+        startForeground(
+            1,
+            getNotification(this, "为了美好生活", "辅助开启中，请勿移除")
+        );//创建一个通知，创建通知前记得获取开启通知权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             requestRebind(ComponentName(this, LifeNotificationListenerService::class.java))
         }
@@ -53,7 +57,7 @@ class LifeNotificationListenerService : NotificationListenerService() {
                 "谢谢配合"
             )
         ) {
-            createSystemClock()
+            createSystemClock(text)
         }
         baseContext
     }
@@ -65,11 +69,13 @@ class LifeNotificationListenerService : NotificationListenerService() {
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.d(TAG, "onListenerConnected")
-        Toast.makeText(applicationContext,"已连接",Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "已连接", Toast.LENGTH_LONG).show()
+        App.mainActivity?.setStatus(200)
     }
 
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
+        App.mainActivity?.setStatus(-1)
         Log.d(TAG, "onListenerDisconnected")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // 通知侦听器断开连接 - 请求重新绑定
@@ -77,12 +83,12 @@ class LifeNotificationListenerService : NotificationListenerService() {
         }
     }
 
-    private fun createSystemClock() {
+    private fun createSystemClock(text: String) {
         val intent = Intent(AlarmClock.ACTION_SET_ALARM)
         Calendar.getInstance(TimeZone.getDefault())
-        intent.putExtra(AlarmClock.EXTRA_MINUTES, Calendar.getInstance().get(Calendar.MINUTE)+1)
-        intent.putExtra(AlarmClock.EXTRA_MINUTES, Calendar.getInstance().get(Calendar.MINUTE)+1)
-        intent.putExtra(AlarmClock.EXTRA_MESSAGE, "狼来了1111111111111111")
+        intent.putExtra(AlarmClock.EXTRA_MINUTES, Calendar.getInstance().get(Calendar.MINUTE) + 1)
+        intent.putExtra(AlarmClock.EXTRA_MINUTES, Calendar.getInstance().get(Calendar.MINUTE) + 1)
+        intent.putExtra(AlarmClock.EXTRA_MESSAGE, text)
         intent.putExtra(AlarmClock.EXTRA_VIBRATE, true);
         intent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -7,6 +7,7 @@ class App : Application() {
 
     companion object{
         lateinit var instance:Application
+        var mainActivity: MainActivity? = null
     }
 
     override fun onCreate() {

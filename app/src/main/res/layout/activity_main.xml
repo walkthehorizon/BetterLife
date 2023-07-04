@@ -6,24 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/tvTipRed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="#ff0000"
+        android:text="应用完全开源免费,仅用于测试,切勿商用,不需要连接网络"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/tvOpen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="一键开启"
+        android:text="一键开启监控"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvTipRed"
+        android:text="为了避免进程被杀死,请在设置里允许自启动,省电策略选择无限制,手机管家添加该应用进锁定任务" />
+
     <Button
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/tvGoTest"
-        android:text="打开测试页"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="不靠谱?来测一下"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

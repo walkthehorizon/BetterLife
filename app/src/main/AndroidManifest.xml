@@ -2,16 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-    <!--读取短信信息的权限-->
-    <uses-feature
-        android:name="android.hardware.telephony"
-        android:required="false" />
-
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <!--用于访问网络，网络定位需要上网-->
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
@@ -48,12 +38,6 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
-<!--        <receiver android:permission="android.permission.BROADCAST_SMS" android:name=".sms.IncomingBroadcastReceiver" android:enabled="true" android:exported="true">-->
-<!--            <intent-filter android:priority="2147483647">-->
-<!--                <action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
 
         <activity android:name=".test.TestActivity"/>
     </application>
