@@ -7,7 +7,7 @@
 
 ## 安装包下载
 
-https://tt.appc02.com/5fyrqd
+https://gitee.com/walkthehorizon/parking-reminder/raw/master/%E5%81%9C%E8%BD%A6%E6%8F%90%E9%86%92.apk
 
 特别注意：使用前请务必下载**交管12123**App ,并开启通知权限，否则将无法监听到违停相关的通知消息
 
