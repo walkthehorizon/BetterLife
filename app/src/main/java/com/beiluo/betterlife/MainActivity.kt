@@ -7,13 +7,18 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.azhon.appupdate.manager.DownloadManager
 import com.beiluo.betterlife.databinding.ActivityMainBinding
 import com.beiluo.betterlife.notification.LifeNotificationListenerService
 import com.beiluo.betterlife.test.TestActivity
+import com.beiluo.betterlife.update.AppInit
+import com.google.gson.GsonBuilder
+import com.huawei.agconnect.remoteconfig.AGConnectConfig
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,12 +33,14 @@ class MainActivity : AppCompatActivity() {
         NotificationManagerCompat.from(this)
     }
 
+    private val TAG = MainActivity::class.java.simpleName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.mainActivity = this
         setContentView(binding.root)
         binding.tvOpen.setOnClickListener {
-            if(code !=-1){
+            if (code != -1) {
                 return@setOnClickListener
             }
             setStatus(0)
@@ -41,6 +48,15 @@ class MainActivity : AppCompatActivity() {
         }
         binding.tvGoTest.setOnClickListener {
             createNotificationForNormal()
+        }
+        val config = AGConnectConfig.getInstance()
+        config.clearAll()
+        config.fetch().addOnSuccessListener {
+            //使用配置值
+            config.apply(it)
+            checkUpdate(config.getValueAsString("init"))
+        }.addOnFailureListener {
+            Log.e(TAG, "config fetch error")
         }
     }
 
@@ -93,5 +109,26 @@ class MainActivity : AppCompatActivity() {
             .setAutoCancel(true) // 是否自动消失（点击）or mManager.cancel(mNormalNotificationId)、cancelAll、setTimeoutAfter()
         // 发起通知
         manager.notify(8888, mBuilder.build())
+    }
+
+
+    private fun checkUpdate(initStr: String) {
+        Log.e(MainActivity::class.java.simpleName, "initStr:$initStr")
+        val appConfig = GsonBuilder().create().fromJson(initStr, AppInit::class.java)
+        val manager = DownloadManager.Builder(this).run {
+            apkUrl(appConfig.apkUrl)
+            apkName("停车提醒.apk")
+            forcedUpgrade(appConfig.isForce)
+            smallIcon(R.mipmap.ic_launcher)
+            //设置了此参数，那么内部会自动判断是否需要显示更新对话框，否则需要自己判断是否需要更新
+            apkVersionCode(appConfig.versionCode)
+            //同时下面三个参数也必须要设置
+            apkVersionName(appConfig.versionName)
+            apkSize("5MB")
+            apkDescription(appConfig.desc)
+            //省略一些非必须参数...
+            build()
+        }
+        manager.download()
     }
 }
