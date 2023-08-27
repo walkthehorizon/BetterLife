@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -48,6 +49,12 @@ class MainActivity : AppCompatActivity() {
         }
         binding.tvGoTest.setOnClickListener {
             createNotificationForNormal()
+        }
+        binding.tvSetting.setOnClickListener {
+            val intent = Intent("android.settings.APPLICATION_DETAILS_SETTINGS")
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.data = Uri.parse("package:$packageName")
+            startActivity(intent);
         }
         val config = AGConnectConfig.getInstance()
         config.clearAll()
