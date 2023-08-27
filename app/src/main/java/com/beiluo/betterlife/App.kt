@@ -6,6 +6,7 @@ import com.azhon.appupdate.manager.DownloadManager
 import com.beiluo.betterlife.update.AppInit
 import com.google.gson.GsonBuilder
 import com.huawei.agconnect.remoteconfig.AGConnectConfig
+import com.tencent.bugly.crashreport.CrashReport
 
 class App : Application() {
 
@@ -17,6 +18,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        CrashReport.initCrashReport(applicationContext, "c0f39436e7", false)
     }
 
 }
